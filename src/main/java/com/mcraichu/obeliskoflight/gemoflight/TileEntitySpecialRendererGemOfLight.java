@@ -1,4 +1,4 @@
-package com.mcraichu.obeliskoflight.obelisk;
+package com.mcraichu.obeliskoflight.gemoflight;
 
 import java.awt.Color;
 
@@ -16,9 +16,9 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Vec3;
 
-public class TileEntitySpecialRendererObelisk extends TileEntitySpecialRenderer{
+public class TileEntitySpecialRendererGemOfLight extends TileEntitySpecialRenderer{
 	
-	 private static final ResourceLocation gemTexture = new ResourceLocation(Reference.MODID + ":" + "textures/entity/obelisk.png");
+	 private static final ResourceLocation gemTexture = new ResourceLocation(Reference.MODID + ":" + "textures/entity/obelisk_gem.png");
 
 	/**
 	 * render the tile entity - called every frame while the tileentity is in view of the player
@@ -33,8 +33,8 @@ public class TileEntitySpecialRendererObelisk extends TileEntitySpecialRenderer{
 	 */
 	@Override
 	public void renderTileEntityAt(TileEntity tileEntity, double relativeX, double relativeY, double relativeZ, float partialTicks, int blockDamageProgress) {
-		if (!(tileEntity instanceof TileEntityObelisk)) return; // should never happen
-		TileEntityObelisk tileEntityMBE21 = (TileEntityObelisk) tileEntity;
+		if (!(tileEntity instanceof TileEntityGemOfLight)) return; // should never happen
+		TileEntityGemOfLight tileEntityMBE21 = (TileEntityGemOfLight) tileEntity;
 
 		// the gem changes its appearance and animation as the player approaches.
 		// When the player is a long distance away, the gem is dark, resting in the hopper, and does not rotate.
@@ -49,7 +49,7 @@ public class TileEntitySpecialRendererObelisk extends TileEntitySpecialRenderer{
 		// 4) the speed at which the gem is spinning, which depends on player distance.
 
 		final double pedestalCentreOffsetX = 0.5;
-		final double pedestalCentreOffsetY = 0.0;
+		final double pedestalCentreOffsetY = 0.8;
 		final double pedestalCentreOffsetZ = 0.5;
 		Vec3 playerEye = new Vec3(0.0, 0.0, 0.0);
 		Vec3 pedestalCentre = new Vec3(relativeX + pedestalCentreOffsetX, relativeY + pedestalCentreOffsetY, relativeZ + pedestalCentreOffsetZ);
@@ -65,8 +65,8 @@ public class TileEntitySpecialRendererObelisk extends TileEntitySpecialRenderer{
 		final double MIN_LEVITATE_HEIGHT = 0.0;
 		final double MAX_LEVITATE_HEIGHT = 0.5;
 		double gemCentreOffsetX = pedestalCentreOffsetX;
-		double gemCentreOffsetY = 0.0;// pedestalCentreOffsetY + utilities.interpolate(playerDistance, DISTANCE_FOR_MIN_LEVITATE, DISTANCE_FOR_MAX_LEVITATE,
-			//	MIN_LEVITATE_HEIGHT, MAX_LEVITATE_HEIGHT);
+		double gemCentreOffsetY = pedestalCentreOffsetY + utilities.interpolate(playerDistance, DISTANCE_FOR_MIN_LEVITATE, DISTANCE_FOR_MAX_LEVITATE,
+				MIN_LEVITATE_HEIGHT, MAX_LEVITATE_HEIGHT);
 		double gemCentreOffsetZ = pedestalCentreOffsetZ;
 
 		final double MIN_GLOW = 0.0;
@@ -97,7 +97,7 @@ public class TileEntitySpecialRendererObelisk extends TileEntitySpecialRenderer{
 			// add an extra offset as well, i.e. [gemCentreOffsetX, gemCentreOffsetY, gemCentreOffsetZ]
 			GlStateManager.translate(relativeX + gemCentreOffsetX, relativeY + gemCentreOffsetY, relativeZ + gemCentreOffsetZ);
 
-			//GlStateManager.rotate((float)angularPositionInDegrees, 0, 1, 0);   // rotate around the vertical axis
+			GlStateManager.rotate((float)angularPositionInDegrees, 0, 1, 0);   // rotate around the vertical axis
 
 			final double GEM_HEIGHT = 0.5;        // desired render height of the gem
 			final double MODEL_HEIGHT = 1.0;      // actual height of the gem in the vertexTable
@@ -106,7 +106,6 @@ public class TileEntitySpecialRendererObelisk extends TileEntitySpecialRenderer{
 
 			Tessellator tessellator = Tessellator.getInstance();
 			WorldRenderer worldrenderer = tessellator.getWorldRenderer();
-			
 			this.bindTexture(gemTexture);         // texture for the gem appearance
 
 			// set the key rendering flags appropriately...
@@ -117,7 +116,7 @@ public class TileEntitySpecialRendererObelisk extends TileEntitySpecialRenderer{
 			// set the rendering colour as the gem base colour
 			Color fullBrightnessColor = tileEntityMBE21.getGemColour();
 			float red = 0, green = 0, blue = 0;
-			if (fullBrightnessColor != TileEntityObelisk.INVALID_COLOR) {
+			if (fullBrightnessColor != TileEntityGemOfLight.INVALID_COLOR) {
 				red = (float) (fullBrightnessColor.getRed() / 255.0);
 				green = (float) (fullBrightnessColor.getGreen() / 255.0);
 				blue = (float) (fullBrightnessColor.getBlue() / 255.0);
@@ -130,8 +129,7 @@ public class TileEntitySpecialRendererObelisk extends TileEntitySpecialRenderer{
 			final int BLOCK_LIGHT_VALUE = 0;
 			OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, SKY_LIGHT_VALUE * 16.0F, BLOCK_LIGHT_VALUE * 16.0F);
 
-			worldrenderer.startDrawingQuads();
-			//worldrenderer.startDrawing(GL11.GL_TRIANGLES);
+			worldrenderer.startDrawing(GL11.GL_TRIANGLES);
 			addGemVertices(worldrenderer);
 			tessellator.draw();
 
@@ -145,103 +143,30 @@ public class TileEntitySpecialRendererObelisk extends TileEntitySpecialRenderer{
 	//   loader is (not yet?) implemented.
 	private void addGemVertices(WorldRenderer worldrenderer) {
 		final double[][] vertexTable = {
-				
-				//bottom
-				{ 0.8, 0.0,-1.0, 1.0,0.8},  //d
-				{ 0.8, 0.0, 1.0, 1.0,0.0},  //g
-				{-0.8, 0.0, 1.0, 0.0,0.0},  //e
-				{-0.8, 0.0,-1.0, 0.0,0.8},  //a
-				
-				//1 etage
-				{-0.8, 0.0,-1.0, 1.0,0.8},  //a
-				{-0.8, 2.0  , 0.0, 1.0,0.0},  //b
-				{ 0.8, 2.0  , 0.0, 0.0,0.0},  //c
-				{ 0.8, 0.0,-1.0, 0.0,0.8},  //d
-				
-				{-0.8, 0.0, 1.0, 1.0,0.8},  //e
-				{-0.8, 2.0  , 1.0, 1.0,0.0},  //f
-				{-0.8, 2.0  , 0.0, 0.0,0.0},  //b
-				{-0.8, 0.0,-1.0, 0.0,0.8},  //a
-				
-				{ 0.8, 0.0, 1.0, 1.0,0.8},  //g
-				{ 0.8, 2.0  , 1.0, 1.0,0.0},  //h
-				{-0.8, 2.0  , 1.0, 0.0,0.0},  //f
-				{-0.8, 0.0, 1.0, 0.0,0.8},  //e
-				
-				{ 0.8, 0.0,-1.0, 1.0,0.8},  //d
-				{ 0.8, 2.0  , 0.0, 1.0,0.0},  //c				
-				{ 0.8, 2.0  , 1.0, 0.0,0.0},  //h
-				{ 0.8, 0.0, 1.0, 0.0,0.8},   //g
-				
-				//2 etage
-				{-0.8, 2.0, 0.0, 1.0,0.8},  //b
-				{-0.6, 4.0, 0.0, 1.0,0.0},  //i
-				{ 0.6, 4.0, 0.0, 0.0,0.0},  //j				
-				{ 0.8, 2.0, 0.0, 0.0,0.8},  //c
-
-				{-0.8, 2.0, 1.0, 1.0,0.8},  //f
-				{-0.6, 4.0, 0.6, 1.0,0.0},  //k
-				{-0.6, 4.0, 0.0, 0.0,0.0},  //i
-				{-0.8, 2.0, 0.0, 0.0,0.8},  //b
-
-				{ 0.8, 2.0, 1.0, 1.0,0.8},  //h
-				{ 0.6, 4.0, 0.6, 1.0,0.0},  //l
-				{-0.6, 4.0, 0.6, 0.0,0.0},  //k
-				{-0.8, 2.0, 1.0, 0.0,0.8},  //f
-
-				{ 0.8, 2.0, 0.0, 1.0,0.8},  //c
-				{ 0.6, 4.0, 0.0, 1.0,0.0},  //j
-				{ 0.6, 4.0, 0.6, 0.0,0.0},  //l
-				{ 0.8, 2.0, 1.0, 0.0,0.8},  //h
-				
-				//3 etage
-				{-0.6 , 4.0, 0.0 , 1.0,0.8},  //i
-				{-0.35, 5.3,-0.65, 1.0,0.0},  //m
-				{0.35 , 5.3,-0.65, 0.0,0.0},  //n
-				{ 0.6 , 4.0, 0.0 , 0.0,0.8},  //j				
-
-				{-0.6 , 4.0, 0.6 , 1.0,0.8},  //k
-				{-0.35, 5.5,-0.3 , 1.0,0.0},  //o
-				{-0.35, 5.3,-0.65, 0.0,0.0},  //m
-				{-0.6 , 4.0, 0.0 , 0.0,0.8},  //i
-
-				{ 0.6 , 4.0, 0.6 , 1.0,0.8},  //l
-				{ 0.35, 5.5,-0.3 , 1.0,0.0},  //p
-				{-0.35, 5.5,-0.3 , 0.0,0.0},  //o
-				{-0.6 , 4.0, 0.6 , 0.0,0.8},  //k
-		
-				{ 0.6 , 4.0, 0.0 , 1.0,0.8},  //j
-				{ 0.35, 5.3,-0.65, 1.0,0.0},  //n
-				{ 0.35, 5.5,-0.3 , 0.0,0.0},  //p
-				{ 0.6 , 4.0, 0.6 , 0.0,0.8},  //l
-
-				//tip
-				{-0.35, 5.3,-0.65, 1.0,1.0},  //m
-				{-0.05, 6.0,-1.0 , 1.0,0.8},  //q
-				{ 0.05, 6.0,-1.0 , 0.0,0.8},  //r
-				{0.35 , 5.3,-0.65, 0.0,1.0},  //n
-
-				{-0.35, 5.5,-0.3 , 1.0,1.0},  //o
-				{-0.05, 6.0,-0.95, 1.0,0.8},  //s
-				{-0.05, 6.0,-1.0 , 0.0,0.8},  //q
-				{-0.35, 5.3,-0.65, 0.0,1.0},  //m
-
-				{ 0.35, 5.5,-0.3 , 1.0,1.0},  //p
-				{ 0.05, 6.0,-0.95, 1.0,0.8},  //t
-				{-0.05, 6.0,-0.95, 0.0,0.8},  //s
-				{-0.35, 5.5,-0.3 , 0.0,1.0},  //o
-
-				{ 0.35, 5.3,-0.65, 1.0,1.0},  //n				
-				{ 0.05, 6.0,-1.0 , 1.0,0.8},  //r
-				{ 0.05, 6.0,-0.95, 0.0,0.8},  //t
-				{ 0.35, 5.5,-0.3 , 0.0,1.0},  //p
-
-				//top
-				{-0.05, 6.0,-1.0 , 1.0,1.0},  //q
-				{-0.05, 6.0,-0.95, 1.0,0.8},  //s
-				{ 0.05, 6.0,-0.95, 0.0,0.8},  //t
-				{ 0.05, 6.0,-1.0 , 0.0,1.0},  //r
-				
+				{0.000,1.000,0.000,0.000,0.118},          //1
+				{-0.354,0.500,-0.354,0.000,0.354},
+				{-0.354,0.500,0.354,0.236,0.236},
+				{-0.354,0.500,0.354,0.236,0.236},         //2
+				{-0.354,0.500,-0.354,0.000,0.354},
+				{0.000,0.000,0.000,0.236,0.471},
+				{-0.354,0.500,0.354,0.236,0.236},         //3
+				{0.000,0.000,0.000,0.236,0.471},
+				{0.354,0.500,0.354,0.471,0.354},
+				{-0.354,0.500,0.354,0.236,0.236},         //4
+				{0.354,0.500,0.354,0.471,0.354},
+				{0.000,1.000,0.000,0.471,0.118},
+				{0.000,1.000,0.000,0.471,0.118},          //5
+				{0.354,0.500,0.354,0.471,0.354},
+				{0.354,0.500,-0.354,0.707,0.236},
+				{0.354,0.500,-0.354,0.707,0.236},         //6
+				{0.354,0.500,0.354,0.471,0.354},
+				{0.000,0.000,0.000,0.707,0.471},
+				{0.354,0.500,-0.354,0.707,0.236},         //7
+				{0.000,0.000,0.000,0.707,0.471},
+				{-0.354,0.500,-0.354,0.943,0.354},
+				{0.000,1.000,0.000,0.943,0.118},          //8
+				{0.354,0.500,-0.354,0.707,0.236},
+				{-0.354,0.500,-0.354,0.943,0.354}
 		};
 
 		for (double [] vertex : vertexTable) {
