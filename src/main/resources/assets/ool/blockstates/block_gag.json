@@ -1,0 +1,5 @@
+{
+  "variants": {
+    "normal": { "model": "ool:block_gag_model" }
+  }
+}

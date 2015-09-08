@@ -1,14 +1,14 @@
 [
 {
-  "modid": "examplemod",
-  "name": "Example Mod",
-  "description": "Example placeholder mod.",
+  "modid": "obeliskoflight",
+  "name": "Obelisk of Light",
+  "description": "The obelisk of light from cnc and an armor of nod infantry.",
   "version": "${version}",
   "mcversion": "${mcversion}",
   "url": "",
   "updateUrl": "",
-  "authorList": ["ExampleDude"],
-  "credits": "The Forge and FML guys, for making this example",
+  "authorList": ["McRaichu"],
+  "credits": "The Forge and FML guys, TheGreyGhost for his example mods, i got the gem from there. check out his website.",
   "logoFile": "",
   "screenshots": [],
   "dependencies": []

@@ -15,6 +15,8 @@ public class ObeliskOfLightMain {
 	@SidedProxy(clientSide=Reference.CLIENT_PROXY_CLASS, serverSide=Reference.SERVER_PROXY_CLASS)
 	public static CommonProxy proxy;
 
+	public static final ObeliskOfLightTab tabobelisk = new ObeliskOfLightTab("tabObelisk");
+	
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event)
 	{

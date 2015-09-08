@@ -1,0 +1,26 @@
+{
+    "textures": {
+        "down": "ool:blocks/obelisk_part_face0",
+        "up": "ool:blocks/obelisk_part_face1",
+        "north": "ool:blocks/obelisk_part_face2",
+        "east": "ool:blocks/obelisk_part_face5",
+        "south": "ool:blocks/obelisk_part_face3",
+        "west": "ool:blocks/obelisk_part_face4",
+        "particle": "blocks/redstone_block"
+    },
+    "elements": [
+        {
+            "name": "Cube",
+            "from": [ 7.0, 2.0, 7.0 ], 
+            "to": [ 8.0, 3.0, 8.0 ], 
+            "faces": {
+                "north": { "texture": "#-1", "uv": [ 0.0, 0.0, 1.0, 1.0 ] },
+                "east": { "texture": "#-1", "uv": [ 0.0, 0.0, 1.0, 1.0 ] },
+                "south": { "texture": "#-1", "uv": [ 0.0, 0.0, 1.0, 1.0 ] },
+                "west": { "texture": "#-1", "uv": [ 0.0, 0.0, 1.0, 1.0 ] },
+                "up": { "texture": "#-1", "uv": [ 0.0, 0.0, 1.0, 1.0 ] },
+                "down": { "texture": "#-1", "uv": [ 0.0, 0.0, 1.0, 1.0 ] }
+            }
+        }
+    ]
+}

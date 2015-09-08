@@ -1,0 +1,12 @@
+tile.obelisk_part.name=Part of the Obelisk
+item.obelisk_part.name=Part of the Obelisk
+tile.gem_of_light.name=Gem of Light
+item.gem_of_light.name=Gem of Light
+item.item_obelisk.name=Obelisk of Light
+tile.obelisk.name=Obelisk of Light
+tile.block_gag.name=Obelisk of Light
+itemGroup.tabObelisk=Obelisk of Light
+item.nodarmor_chestplate.name=Nod Infantry Chestplate
+item.nodarmor_helmet.name=Nod Infantry Helmet
+item.nodarmor_leggings.name=Nod Infantry Leggings
+item.nodarmor_boots.name=Nod Infantry Boots

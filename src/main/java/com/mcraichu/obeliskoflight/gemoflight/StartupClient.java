@@ -9,13 +9,16 @@ import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
 public class StartupClient {
+	
+	public static Item itemGem_of_light;
+	
 	public static void preInitClient()
 	{
 	}
 
 	public static void initClient()
 	{
-		Item itemGem_of_light = GameRegistry.findItem(Reference.MODID, GemOfLight.unl_name);
+		itemGem_of_light = GameRegistry.findItem(Reference.MODID, GemOfLight.unl_name);
 		ModelResourceLocation itemModelResourceLocation = new ModelResourceLocation(Reference.MODID + ":" + GemOfLight.unl_name, "inventory");
 		final int DEFAULT_ITEM_SUBTYPE = 0;
 		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(itemGem_of_light, DEFAULT_ITEM_SUBTYPE, itemModelResourceLocation);

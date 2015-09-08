@@ -1,0 +1,12 @@
+{
+    "parent": "block/cube",
+    "textures": {
+        "down": "blocks/stone",
+        "up": "ool:blocks/stone_hole",
+        "north": "blocks/stone",
+        "east": "blocks/stone",
+        "south": "blocks/stone",
+        "west": "blocks/stone",
+        "particle": "blocks/redstone_block"
+    }
+}

@@ -1,0 +1,4 @@
+{
+    "sound_fire": { "category": "master", "sounds": [{"name": "sound_fire","stream": false} ] },
+    "sound_charge":  { "category": "master", "sounds": [ {"name": "sound_charge","stream": false} ] }
+}

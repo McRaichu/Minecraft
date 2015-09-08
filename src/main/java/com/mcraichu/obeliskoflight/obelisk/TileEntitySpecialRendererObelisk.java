@@ -9,16 +9,19 @@ import com.mcraichu.obeliskoflight.utilities.utilities;
 
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.OpenGlHelper;
+import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.WorldRenderer;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Vec3;
 
 public class TileEntitySpecialRendererObelisk extends TileEntitySpecialRenderer{
 	
-	 private static final ResourceLocation gemTexture = new ResourceLocation(Reference.MODID + ":" + "textures/entity/obelisk.png");
+	 private static final ResourceLocation obeliskTexture = new ResourceLocation(Reference.MODID + ":" + "textures/entity/obelisk.png");
+	 private static final ResourceLocation beamTexture = new ResourceLocation(Reference.MODID + ":" + "textures/entity/laser.png");
 
 	/**
 	 * render the tile entity - called every frame while the tileentity is in view of the player
@@ -34,7 +37,7 @@ public class TileEntitySpecialRendererObelisk extends TileEntitySpecialRenderer{
 	@Override
 	public void renderTileEntityAt(TileEntity tileEntity, double relativeX, double relativeY, double relativeZ, float partialTicks, int blockDamageProgress) {
 		if (!(tileEntity instanceof TileEntityObelisk)) return; // should never happen
-		TileEntityObelisk tileEntityMBE21 = (TileEntityObelisk) tileEntity;
+		TileEntityObelisk tileEntityObelisk = (TileEntityObelisk) tileEntity;
 
 		// the gem changes its appearance and animation as the player approaches.
 		// When the player is a long distance away, the gem is dark, resting in the hopper, and does not rotate.
@@ -48,37 +51,9 @@ public class TileEntitySpecialRendererObelisk extends TileEntitySpecialRenderer{
 		// 3) the distance that the gem rises above the pedestal, which depends on player distance
 		// 4) the speed at which the gem is spinning, which depends on player distance.
 
-		final double pedestalCentreOffsetX = 0.5;
-		final double pedestalCentreOffsetY = 0.0;
-		final double pedestalCentreOffsetZ = 0.5;
-		Vec3 playerEye = new Vec3(0.0, 0.0, 0.0);
-		Vec3 pedestalCentre = new Vec3(relativeX + pedestalCentreOffsetX, relativeY + pedestalCentreOffsetY, relativeZ + pedestalCentreOffsetZ);
-		double playerDistance = playerEye.distanceTo(pedestalCentre);
-
-		final double DISTANCE_FOR_MIN_SPIN = 8.0;
-		final double DISTANCE_FOR_MAX_SPIN = 4.0;
-		final double DISTANCE_FOR_MIN_GLOW = 16.0;
-		final double DISTANCE_FOR_MAX_GLOW = 4.0;
-		final double DISTANCE_FOR_MIN_LEVITATE = 4.0;
-		final double DISTANCE_FOR_MAX_LEVITATE = 2.0;
-
-		final double MIN_LEVITATE_HEIGHT = 0.0;
-		final double MAX_LEVITATE_HEIGHT = 0.5;
-		double gemCentreOffsetX = pedestalCentreOffsetX;
-		double gemCentreOffsetY = 0.0;// pedestalCentreOffsetY + utilities.interpolate(playerDistance, DISTANCE_FOR_MIN_LEVITATE, DISTANCE_FOR_MAX_LEVITATE,
-			//	MIN_LEVITATE_HEIGHT, MAX_LEVITATE_HEIGHT);
-		double gemCentreOffsetZ = pedestalCentreOffsetZ;
-
-		final double MIN_GLOW = 0.0;
-		final double MAX_GLOW = 1.0;
-		double glowMultiplier = utilities.interpolate(playerDistance, DISTANCE_FOR_MIN_GLOW, DISTANCE_FOR_MAX_GLOW,
-				MIN_GLOW, MAX_GLOW);
-
-		final double MIN_REV_PER_SEC = 0.0;
-		final double MAX_REV_PER_SEC = 0.5;
-		double revsPerSecond = utilities.interpolate(playerDistance, DISTANCE_FOR_MIN_SPIN, DISTANCE_FOR_MAX_SPIN,
-				MIN_REV_PER_SEC, MAX_REV_PER_SEC);
-		double angularPositionInDegrees = tileEntityMBE21.getNextAngularPosition(revsPerSecond);
+		double centreOffsetX = 0.5;
+		double centreOffsetY = 0.0;
+		double centreOffsetZ = 0.5;
 
 		try {
 			// save the transformation matrix and the rendering attributes, so that we can restore them after rendering.  This
@@ -95,55 +70,52 @@ public class TileEntitySpecialRendererObelisk extends TileEntitySpecialRenderer{
 			// render exactly over the top of the TileEntity's block.
 			// In this example, the zero point of our model needs to be in the middle of the block, not at the [x,y,z] of the block, so we need to
 			// add an extra offset as well, i.e. [gemCentreOffsetX, gemCentreOffsetY, gemCentreOffsetZ]
-			GlStateManager.translate(relativeX + gemCentreOffsetX, relativeY + gemCentreOffsetY, relativeZ + gemCentreOffsetZ);
+			GlStateManager.translate(relativeX + centreOffsetX, relativeY + centreOffsetY, relativeZ + centreOffsetZ);
 
-			//GlStateManager.rotate((float)angularPositionInDegrees, 0, 1, 0);   // rotate around the vertical axis
-
-			final double GEM_HEIGHT = 0.5;        // desired render height of the gem
+			final double RENDER_HEIGHT = 0.5;        // desired render height
 			final double MODEL_HEIGHT = 1.0;      // actual height of the gem in the vertexTable
-			final double SCALE_FACTOR = GEM_HEIGHT / MODEL_HEIGHT;
+			final double SCALE_FACTOR = RENDER_HEIGHT / MODEL_HEIGHT;
 			GlStateManager.scale(SCALE_FACTOR, SCALE_FACTOR, SCALE_FACTOR);
 
 			Tessellator tessellator = Tessellator.getInstance();
 			WorldRenderer worldrenderer = tessellator.getWorldRenderer();
 			
-			this.bindTexture(gemTexture);         // texture for the gem appearance
+			this.bindTexture(obeliskTexture);         // texture for the gem appearance
 
 			// set the key rendering flags appropriately...
 			GL11.glDisable(GL11.GL_LIGHTING);     // turn off "item" lighting (face brightness depends on which direction it is facing)
 			GL11.glDisable(GL11.GL_BLEND);        // turn off "alpha" transparency blending
 			GL11.glDepthMask(true);               // gem is hidden behind other objects
 
-			// set the rendering colour as the gem base colour
-			Color fullBrightnessColor = tileEntityMBE21.getGemColour();
-			float red = 0, green = 0, blue = 0;
-			if (fullBrightnessColor != TileEntityObelisk.INVALID_COLOR) {
-				red = (float) (fullBrightnessColor.getRed() / 255.0);
-				green = (float) (fullBrightnessColor.getGreen() / 255.0);
-				blue = (float) (fullBrightnessColor.getBlue() / 255.0);
-			}
-			GlStateManager.color(red, green, blue);     // change the rendering colour
-
 			// change the "multitexturing" lighting value (default value is the brightness of the tile entity's block)
 			// - this will make the gem "glow" brighter than the surroundings if it is dark.
+			// glowmultiplier (0-1)
+			float glowMultiplier = 1.0f; 
 			final int SKY_LIGHT_VALUE = (int)(15 * glowMultiplier);
 			final int BLOCK_LIGHT_VALUE = 0;
 			OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, SKY_LIGHT_VALUE * 16.0F, BLOCK_LIGHT_VALUE * 16.0F);
 
 			worldrenderer.startDrawingQuads();
 			//worldrenderer.startDrawing(GL11.GL_TRIANGLES);
-			addGemVertices(worldrenderer);
+			addObeliskVertices(worldrenderer);
+			addTipVertices(worldrenderer,tileEntityObelisk.currentCharge(),tileEntityObelisk.maxCharge());
+			
 			tessellator.draw();
 
 		} finally {
 			GL11.glPopAttrib();
 			GL11.glPopMatrix();
 		}
+
+		if(tileEntityObelisk.shot && (tileEntityObelisk.target != null)){// && (tileEntityObelisk.ticksUntilReady < (int)(tileEntityObelisk.untilReady/2))){
+			drawLaserVertices(tileEntity, relativeX, relativeY, relativeZ, partialTicks, blockDamageProgress);
+		}
+		
 	}
 
 	// add the vertices for drawing the gem.  Generated using a model builder and pasted manually because the object model
 	//   loader is (not yet?) implemented.
-	private void addGemVertices(WorldRenderer worldrenderer) {
+	private void addObeliskVertices(WorldRenderer worldrenderer) {
 		final double[][] vertexTable = {
 				
 				//bottom
@@ -154,23 +126,23 @@ public class TileEntitySpecialRendererObelisk extends TileEntitySpecialRenderer{
 				
 				//1 etage
 				{-0.8, 0.0,-1.0, 1.0,0.8},  //a
-				{-0.8, 2.0  , 0.0, 1.0,0.0},  //b
-				{ 0.8, 2.0  , 0.0, 0.0,0.0},  //c
+				{-0.8, 2.0, 0.0, 1.0,0.0},  //b
+				{ 0.8, 2.0, 0.0, 0.0,0.0},  //c
 				{ 0.8, 0.0,-1.0, 0.0,0.8},  //d
 				
 				{-0.8, 0.0, 1.0, 1.0,0.8},  //e
-				{-0.8, 2.0  , 1.0, 1.0,0.0},  //f
-				{-0.8, 2.0  , 0.0, 0.0,0.0},  //b
+				{-0.8, 2.0, 1.0, 1.0,0.0},  //f
+				{-0.8, 2.0, 0.0, 0.0,0.0},  //b
 				{-0.8, 0.0,-1.0, 0.0,0.8},  //a
 				
 				{ 0.8, 0.0, 1.0, 1.0,0.8},  //g
-				{ 0.8, 2.0  , 1.0, 1.0,0.0},  //h
-				{-0.8, 2.0  , 1.0, 0.0,0.0},  //f
+				{ 0.8, 2.0, 1.0, 1.0,0.0},  //h
+				{-0.8, 2.0, 1.0, 0.0,0.0},  //f
 				{-0.8, 0.0, 1.0, 0.0,0.8},  //e
 				
 				{ 0.8, 0.0,-1.0, 1.0,0.8},  //d
-				{ 0.8, 2.0  , 0.0, 1.0,0.0},  //c				
-				{ 0.8, 2.0  , 1.0, 0.0,0.0},  //h
+				{ 0.8, 2.0, 0.0, 1.0,0.0},  //c				
+				{ 0.8, 2.0, 1.0, 0.0,0.0},  //h
 				{ 0.8, 0.0, 1.0, 0.0,0.8},   //g
 				
 				//2 etage
@@ -214,33 +186,62 @@ public class TileEntitySpecialRendererObelisk extends TileEntitySpecialRenderer{
 				{ 0.35, 5.3,-0.65, 1.0,0.0},  //n
 				{ 0.35, 5.5,-0.3 , 0.0,0.0},  //p
 				{ 0.6 , 4.0, 0.6 , 0.0,0.8},  //l
+				
+		};
 
+		for (double [] vertex : vertexTable) {
+			worldrenderer.addVertexWithUV(vertex[0], vertex[1], vertex[2], vertex[3], vertex[4]);
+		}
+	}
+	
+	private void addTipVertices(WorldRenderer worldrenderer, int current, int max) {
+		
+		float chargingSteps = 10.0f; //wir haben 5 stufen
+		float temp = (float)current/(float)max;
+		float temp1 = 1/(chargingSteps);
+		int temp2 = (int)( (temp*10)/ (temp1*10));		
+		float offset1,offset2;
+		offset1 = (1/chargingSteps) * temp2;
+		offset2 = (1/chargingSteps) * (temp2+1);
+		if(current >= max){
+			offset2 = 1.0f;
+			offset1 = 1.0f -(1/chargingSteps);
+		}
+		
+		float up2 = (1/chargingSteps);
+		float up1 = 0.0f;
+		if(temp2 > 0){
+			up2 = 1.0f;
+			up1 = 1.0f -(1/chargingSteps);
+		}
+	
+		final double[][] vertexTable = {
 				//tip
-				{-0.35, 5.3,-0.65, 1.0,1.0},  //m
-				{-0.05, 6.0,-1.0 , 1.0,0.8},  //q
-				{ 0.05, 6.0,-1.0 , 0.0,0.8},  //r
-				{0.35 , 5.3,-0.65, 0.0,1.0},  //n
+				{-0.35, 5.3,-0.65, offset2,1.0},  //m
+				{-0.05, 6.0,-1.0 , offset2,0.8},  //q
+				{ 0.05, 6.0,-1.0 , offset1,0.8},  //r
+				{0.35 , 5.3,-0.65, offset1,1.0},  //n
 
-				{-0.35, 5.5,-0.3 , 1.0,1.0},  //o
-				{-0.05, 6.0,-0.95, 1.0,0.8},  //s
-				{-0.05, 6.0,-1.0 , 0.0,0.8},  //q
-				{-0.35, 5.3,-0.65, 0.0,1.0},  //m
+				{-0.35, 5.5,-0.3 , offset2,1.0},  //o
+				{-0.05, 6.0,-0.95, offset2,0.8},  //s
+				{-0.05, 6.0,-1.0 , offset1,0.8},  //q
+				{-0.35, 5.3,-0.65, offset1,1.0},  //m
 
-				{ 0.35, 5.5,-0.3 , 1.0,1.0},  //p
-				{ 0.05, 6.0,-0.95, 1.0,0.8},  //t
-				{-0.05, 6.0,-0.95, 0.0,0.8},  //s
-				{-0.35, 5.5,-0.3 , 0.0,1.0},  //o
+				{ 0.35, 5.5,-0.3 , offset2,1.0},  //p
+				{ 0.05, 6.0,-0.95, offset2,0.8},  //t
+				{-0.05, 6.0,-0.95, offset1,0.8},  //s
+				{-0.35, 5.5,-0.3 , offset1,1.0},  //o
 
-				{ 0.35, 5.3,-0.65, 1.0,1.0},  //n				
-				{ 0.05, 6.0,-1.0 , 1.0,0.8},  //r
-				{ 0.05, 6.0,-0.95, 0.0,0.8},  //t
-				{ 0.35, 5.5,-0.3 , 0.0,1.0},  //p
+				{ 0.35, 5.3,-0.65, offset2,1.0},  //n				
+				{ 0.05, 6.0,-1.0 , offset2,0.8},  //r
+				{ 0.05, 6.0,-0.95, offset1,0.8},  //t
+				{ 0.35, 5.5,-0.3 , offset1,1.0},  //p				
 
 				//top
-				{-0.05, 6.0,-1.0 , 1.0,1.0},  //q
-				{-0.05, 6.0,-0.95, 1.0,0.8},  //s
-				{ 0.05, 6.0,-0.95, 0.0,0.8},  //t
-				{ 0.05, 6.0,-1.0 , 0.0,1.0},  //r
+				{-0.05, 6.0,-1.0 , up2,1.0},  //q
+				{-0.05, 6.0,-0.95, up2,0.8},  //s
+				{ 0.05, 6.0,-0.95, up1,0.8},  //t
+				{ 0.05, 6.0,-1.0 , up1,1.0},  //r
 				
 		};
 
@@ -249,5 +250,147 @@ public class TileEntitySpecialRendererObelisk extends TileEntitySpecialRenderer{
 		}
 	}
 
+    public void drawLaserVertices(TileEntity tileEntity, double relativeX, double relativeY, double relativeZ, float partialTicks, int blockDamageProgress){
+   
+    	if (!(tileEntity instanceof TileEntityObelisk)) return; // should never happen
+		TileEntityObelisk tileEntityObelisk = (TileEntityObelisk) tileEntity;
 
+    	double centreOffsetX = 0.5;
+		double centreOffsetY = 0.0;
+		double centreOffsetZ = 0.5;
+
+		try {
+			// save the transformation matrix and the rendering attributes, so that we can restore them after rendering.  This
+			//   prevents us disrupting any vanilla TESR that render after ours.
+			//  using try..finally is not essential but helps make it more robust in case of exceptions
+			// For further information on rendering using the Tessellator, see http://greyminecraftcoder.blogspot.co.at/2014/12/the-tessellator-and-worldrenderer-18.html
+			GL11.glPushMatrix();
+			GL11.glPushAttrib(GL11.GL_ENABLE_BIT);
+
+			// First we need to set up the translation so that we render our gem with the bottom point at 0,0,0
+			// when the renderTileEntityAt method is called, the tessellator is set up so that drawing a dot at [0,0,0] corresponds to the player's eyes
+			// This means that, in order to draw a dot at the TileEntity [x,y,z], we need to translate the reference frame by the difference between the
+			// two points, i.e. by the [relativeX, relativeY, relativeZ] passed to the method.  If you then draw a cube from [0,0,0] to [1,1,1], it will
+			// render exactly over the top of the TileEntity's block.
+			// In this example, the zero point of our model needs to be in the middle of the block, not at the [x,y,z] of the block, so we need to
+			// add an extra offset as well, i.e. [gemCentreOffsetX, gemCentreOffsetY, gemCentreOffsetZ]
+			GlStateManager.translate(relativeX + centreOffsetX, relativeY + centreOffsetY, relativeZ + centreOffsetZ);
+
+			final double RENDER_HEIGHT = 0.5;        // desired render height
+			final double MODEL_HEIGHT = 1.0;      // actual height of the gem in the vertexTable
+			final double SCALE_FACTOR = RENDER_HEIGHT / MODEL_HEIGHT;
+			GlStateManager.scale(SCALE_FACTOR, SCALE_FACTOR, SCALE_FACTOR);
+
+			Tessellator tessellator = Tessellator.getInstance();
+			WorldRenderer worldrenderer = tessellator.getWorldRenderer();
+			
+			this.bindTexture(beamTexture);         // texture for the gem appearance
+
+			// set the key rendering flags appropriately...
+			GL11.glDisable(GL11.GL_LIGHTING);     // turn off "item" lighting (face brightness depends on which direction it is facing)
+			GL11.glDisable(GL11.GL_BLEND);        // turn off "alpha" transparency blending
+			GL11.glDepthMask(true);               // gem is hidden behind other objects
+
+			// change the "multitexturing" lighting value (default value is the brightness of the tile entity's block)
+			// - this will make the gem "glow" brighter than the surroundings if it is dark.
+			// glowmultiplier (0-1)
+			float glowMultiplier = 1.0f; 
+			final int SKY_LIGHT_VALUE = (int)(15 * glowMultiplier);
+			final int BLOCK_LIGHT_VALUE = 0;
+			OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, SKY_LIGHT_VALUE * 16.0F, BLOCK_LIGHT_VALUE * 16.0F);
+
+			worldrenderer.startDrawingQuads();
+			//TRANSFORM target into local coordinate system
+			double tipX = 0.0f;
+			double tipY = 6.0f;
+			double tipZ = -1.0f;
+			
+			double scale_correction =  MODEL_HEIGHT / RENDER_HEIGHT ;
+			
+			
+			double target_x_offset = tileEntityObelisk.target.width;
+			double target_y_offset = tileEntityObelisk.target.height * 0.75;
+			double target_z_offset = tileEntityObelisk.target.width;
+			
+			double relative_targetX = ((tileEntityObelisk.target.posX - target_x_offset) - tileEntityObelisk.getPos().getX());
+			double relative_targetY = ((tileEntityObelisk.target.posY + target_y_offset) - tileEntityObelisk.getPos().getY());
+			double relative_targetZ = ((tileEntityObelisk.target.posZ - target_z_offset) - tileEntityObelisk.getPos().getZ());
+			
+			double targetX = scale_correction * (relative_targetX);
+			double targetY = scale_correction * (relative_targetY);
+			double targetZ = scale_correction * (relative_targetZ);
+			
+			
+			double playerX = (-1.0) * (scale_correction * relativeX);
+			double playerY = (-1.0) * (scale_correction * relativeY);
+			double playerZ = (-1.0) * (scale_correction * relativeZ);
+			
+//			System.out.println("playerX=" + playerX);
+//			System.out.println("playerY=" + playerY);
+//			System.out.println("playerZ=" + playerZ);
+//			
+//			System.out.println("targetX=" + targetX);
+//			System.out.println("targetY=" + targetY);
+//			System.out.println("targetZ=" + targetZ);
+			
+			Vec3 pl = new Vec3(playerX , playerY , playerZ);			
+			Vec3 en = new Vec3(targetX,targetY,targetZ);
+			Vec3 st = new Vec3(tipX,tipY,tipZ);
+			Vec3 ps = pl.subtractReverse(st);
+			Vec3 se = st.subtractReverse(en);
+			Vec3 cross = ps.crossProduct(se);
+			cross = cross.normalize();
+			double b = 0.15f;
+			Vec3 across = new Vec3(cross.xCoord*b,cross.yCoord*b,cross.zCoord*b);
+			Vec3 v1 = st.add(across);
+			Vec3 v2 = st.subtract(across);
+			Vec3 v3 = en.add(across);
+			Vec3 v4 = en.subtract(across);
+			
+			Vec3 cross2 = cross.crossProduct(se);
+			cross2 = cross2.normalize();
+			Vec3 across2 = new Vec3(cross2.xCoord*b,cross2.yCoord*b,cross2.zCoord*b);
+			Vec3 v5 = st.add(across2);
+			Vec3 v6 = st.subtract(across2);
+			Vec3 v7 = en.add(across2);
+			Vec3 v8 = en.subtract(across2);
+
+			final double[][] vertexTable = {	
+
+				{v1.xCoord, v1.yCoord, v1.zCoord , 1.0,1.0},  
+				{v5.xCoord, v5.yCoord, v5.zCoord, 1.0,0.0},  
+				{v7.xCoord, v7.yCoord, v7.zCoord, 0.0,0.0},  
+				{v3.xCoord, v3.yCoord, v4.zCoord, 0.0,1.0},
+				
+				{v5.xCoord, v5.yCoord, v5.zCoord , 1.0,1.0},  
+				{v2.xCoord, v2.yCoord, v2.zCoord, 1.0,0.0},  
+				{v4.xCoord, v4.yCoord, v4.zCoord, 0.0,0.0},  
+				{v7.xCoord, v7.yCoord, v7.zCoord, 0.0,1.0},
+				
+				{v2.xCoord, v2.yCoord, v2.zCoord , 1.0,1.0},  
+				{v6.xCoord, v6.yCoord, v6.zCoord, 1.0,0.0},  
+				{v8.xCoord, v8.yCoord, v8.zCoord, 0.0,0.0},  
+				{v4.xCoord, v4.yCoord, v4.zCoord, 0.0,1.0},
+				
+				{v6.xCoord, v6.yCoord, v6.zCoord , 1.0,1.0},  
+				{v1.xCoord, v1.yCoord, v1.zCoord, 1.0,0.0},  
+				{v3.xCoord, v3.yCoord, v3.zCoord, 0.0,0.0},  
+				{v8.xCoord, v8.yCoord, v8.zCoord, 0.0,1.0},
+								
+			};
+
+		for (double [] vertex : vertexTable) {
+			worldrenderer.addVertexWithUV(vertex[0], vertex[1], vertex[2], vertex[3], vertex[4]);
+		}
+			
+			tessellator.draw();
+
+		} finally {
+			GL11.glPopAttrib();
+			GL11.glPopMatrix();
+		}
+
+    	
+
+    }
 }

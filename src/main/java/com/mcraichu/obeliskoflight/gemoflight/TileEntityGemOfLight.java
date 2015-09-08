@@ -130,7 +130,7 @@ public class TileEntityGemOfLight extends TileEntity{
 		return aabb;
 	}
 
-	private Color gemColour = INVALID_COLOR;  // the RGB colour of the gem
+	private Color gemColour = Color.RED;  // the RGB colour of the gem
 
 	private final long INVALID_TIME = 0;
 	private long lastTime = INVALID_TIME;  // used for animation

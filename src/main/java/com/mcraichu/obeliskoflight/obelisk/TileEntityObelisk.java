@@ -1,19 +1,144 @@
 package com.mcraichu.obeliskoflight.obelisk;
 
 import java.awt.Color;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Random;
 
+import com.mcraichu.obeliskoflight.Reference;
+
+import net.minecraft.block.Block;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.item.EntityEnderCrystal;
+import net.minecraft.entity.item.EntityXPOrb;
+import net.minecraft.entity.monster.EntityMob;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
+import net.minecraft.server.gui.IUpdatePlayerListBox;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.DamageSource;
+import net.minecraft.util.EntityDamageSource;
+import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.util.Vec3;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class TileEntityObelisk extends TileEntity{
-	
+public class TileEntityObelisk extends TileEntity implements IUpdatePlayerListBox{
+
 	public static final Color INVALID_COLOR = null;
+
+	private float damage = 10.0f;
+	private float distance = 16.0f;
+	private float player_distance = 5.0f;
+	public int ticks = 0;
+	public int ticksUntilReady = 0;
+	public int untilReady = 30;
+	public int ticksUntilCharged = 0;
+	public int untilCharged = 60;
+	public boolean shot = false;
+	public boolean rendered = false;
+	EntityMob target = null;
+	Vec3 target_pos;
+	//Here all the stuff about attacking is done
+	@Override
+	public void update() {
+		//make sure the block is updated
+		if (ticks % 5 == 0) {
+			worldObj.markBlockForUpdate(this.pos);
+		}
+		if((shot == true)&&(ticks > (int)(untilReady/2))){
+			shot = false;
+		}
+
+		if(ticksUntilCharged == 1){
+			this.worldObj.playSound(this.pos.getX(), this.pos.getY(), this.pos.getZ(), Reference.MODID + ":" + "sound_charge", 1.0f, 1.0f, false);
+		}
+
+		//increase the ticks
+		ticks++;
+
+		if(target != null){
+			if(target.getDistanceSqToCenter(this.pos) > (3072.0f)){ //32*32 + 32*32 + 32*32 aka 1024 * 3 
+				//out of range
+				target = null;
+			}else if(target.isDead){
+				//target died
+				target = null;
+			}
+
+		}
+
+		if(target == null){
+			AxisAlignedBB bb = new AxisAlignedBB(this.pos, this.pos.add(1, 1, 1));
+			List list = this.worldObj.getEntitiesWithinAABB(EntityMob.class, bb.expand((double)distance, (double)distance, (double)distance));
+
+			EntityEnderCrystal entityendercrystal = null;
+			double d0 = Double.MAX_VALUE;
+			Iterator iterator = list.iterator();
+
+			while (iterator.hasNext())
+			{
+				EntityMob targetMob = (EntityMob)iterator.next();
+				double d1 = targetMob.getDistanceSqToCenter(this.pos);
+
+				if (d1 < d0)
+				{
+					d0 = d1;
+					target = targetMob;
+				}
+			}
+		}
+
+		if(target == null){
+			//nothing to kill
+			ticksUntilCharged = 0;
+			ticksUntilReady = 0;
+			return;
+		}
+
+		//at this point we have a target (new or old)
+		ticksUntilCharged++;
+		ticksUntilReady++;
+
+		if(ticksUntilCharged < (untilCharged)){
+			return;
+		}
+
+		if(ticksUntilReady < (untilReady)){
+			return;
+		}
+
+		//KILL IT WITH FIRE 
+		// give exp if player nearby
+		DamageSource source = DamageSource.onFire.setDamageBypassesArmor();
+		EntityPlayer player = worldObj.getClosestPlayer(this.pos.getX(), this.pos.getY(), this.pos.getZ(), player_distance);
+		if(player != null){
+			source = new EntityDamageSource("onFire", player).setDamageBypassesArmor();
+		}		
+
+		target.attackEntityFrom(source, damage);
+
+
+
+		target.setFire(1);
+		shot = true;
+		ticksUntilReady = 0;
+		ticks = 0;
+		this.worldObj.playSound(this.pos.getX(), this.pos.getY(), this.pos.getZ(), Reference.MODID + ":" + "sound_fire", 1.0f, 1.0f, false);
+	}
+
+	public int currentCharge(){
+		return ticksUntilCharged;
+	}
+
+	public int maxCharge(){
+		return untilCharged;
+	}
 
 	// get the colour of the gem.  returns INVALID_COLOR if not set yet.
 	public Color getGemColour() {
@@ -30,7 +155,7 @@ public class TileEntityObelisk extends TileEntity{
 	 * @param revsPerSecond
 	 * @return the angular position in degrees (0 - 360)
 	 */
-  public double getNextAngularPosition(double revsPerSecond)
+	public double getNextAngularPosition(double revsPerSecond)
 	{
 		// we calculate the next position as the angular speed multiplied by the elapsed time since the last position.
 		// Elapsed time is calculated using the system clock, which means the animations continue to
@@ -55,7 +180,7 @@ public class TileEntityObelisk extends TileEntity{
 
 	// When the world loads from disk, the server needs to send the TileEntity information to the client
 	//  it uses getDescriptionPacket() and onDataPacket() to do this
-  // In this case, we need it for the gem colour.  There's no need to save the gem angular position because
+	// In this case, we need it for the gem colour.  There's no need to save the gem angular position because
 	//  the player will never notice the difference and the client<-->server synchronisation lag will make it
 	//  inaccurate anyway
 	@Override
@@ -125,9 +250,9 @@ public class TileEntityObelisk extends TileEntity{
 		// if your render should always be performed regardless of where the player is looking, use infinite
 		AxisAlignedBB infiniteExample = INFINITE_EXTENT_AABB;
 
-		// our gem will stay above the block, up to 1 block higher, so our bounding box is from [x,y,z] to  [x+1, y+2, z+1]
-		AxisAlignedBB aabb = new AxisAlignedBB(getPos(), getPos().add(1, 2, 1));
-		return aabb;
+		// our gem will stay above the block, up to 1 block higher, so our bounding box is from [x,y,z] to  [x+1, y+3, z+1]
+		AxisAlignedBB aabb = new AxisAlignedBB(getPos(), getPos().add(1, 3, 1));
+		return infiniteExample;
 	}
 
 	private Color gemColour = INVALID_COLOR;  // the RGB colour of the gem
@@ -135,4 +260,6 @@ public class TileEntityObelisk extends TileEntity{
 	private final long INVALID_TIME = 0;
 	private long lastTime = INVALID_TIME;  // used for animation
 	private double lastAngularPosition; // used for animation
+
+
 }

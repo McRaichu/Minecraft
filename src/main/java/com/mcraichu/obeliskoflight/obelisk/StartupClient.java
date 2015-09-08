@@ -9,13 +9,16 @@ import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
 public class StartupClient {
+	
+	public static Item itemObelisk;
+	
 	public static void preInitClient()
 	{
 	}
 
 	public static void initClient()
 	{
-		Item itemObelisk = GameRegistry.findItem(Reference.MODID, Obelisk.unl_name);
+		itemObelisk = GameRegistry.findItem(Reference.MODID, Obelisk.unl_name);
 		ModelResourceLocation itemModelResourceLocation = new ModelResourceLocation(Reference.MODID + ":" + Obelisk.unl_name, "inventory");
 		final int DEFAULT_ITEM_SUBTYPE = 0;
 		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(itemObelisk, DEFAULT_ITEM_SUBTYPE, itemModelResourceLocation);

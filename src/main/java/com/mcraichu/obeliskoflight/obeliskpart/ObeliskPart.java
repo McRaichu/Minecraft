@@ -1,5 +1,7 @@
 package com.mcraichu.obeliskoflight.obeliskpart;
 
+import com.mcraichu.obeliskoflight.ObeliskOfLightMain;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
@@ -14,7 +16,7 @@ public class ObeliskPart extends Block{
 	public ObeliskPart()
 	{
 		super(Material.rock);
-		this.setCreativeTab(CreativeTabs.tabBlock);   // the block will appear on the Blocks tab in creative
+		this.setCreativeTab(ObeliskOfLightMain.tabobelisk);   // the block will appear on the Blocks tab in creative
 	}
 
 	// the block will render in the SOLID layer.  See http://greyminecraftcoder.blogspot.co.at/2014/12/block-rendering-18.html for more information.
