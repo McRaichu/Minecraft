@@ -5,7 +5,7 @@ import java.awt.Color;
 import org.lwjgl.opengl.GL11;
 
 import com.mcraichu.obeliskoflight.Reference;
-import com.mcraichu.obeliskoflight.utilities.utilities;
+import com.mcraichu.obeliskoflight.utilities.Utilities;
 
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.OpenGlHelper;
@@ -65,18 +65,18 @@ public class TileEntitySpecialRendererGemOfLight extends TileEntitySpecialRender
 		final double MIN_LEVITATE_HEIGHT = 0.0;
 		final double MAX_LEVITATE_HEIGHT = 0.5;
 		double gemCentreOffsetX = pedestalCentreOffsetX;
-		double gemCentreOffsetY = pedestalCentreOffsetY + utilities.interpolate(playerDistance, DISTANCE_FOR_MIN_LEVITATE, DISTANCE_FOR_MAX_LEVITATE,
+		double gemCentreOffsetY = pedestalCentreOffsetY + Utilities.interpolate(playerDistance, DISTANCE_FOR_MIN_LEVITATE, DISTANCE_FOR_MAX_LEVITATE,
 				MIN_LEVITATE_HEIGHT, MAX_LEVITATE_HEIGHT);
 		double gemCentreOffsetZ = pedestalCentreOffsetZ;
 
 		final double MIN_GLOW = 0.0;
 		final double MAX_GLOW = 1.0;
-		double glowMultiplier = utilities.interpolate(playerDistance, DISTANCE_FOR_MIN_GLOW, DISTANCE_FOR_MAX_GLOW,
+		double glowMultiplier = Utilities.interpolate(playerDistance, DISTANCE_FOR_MIN_GLOW, DISTANCE_FOR_MAX_GLOW,
 				MIN_GLOW, MAX_GLOW);
 
 		final double MIN_REV_PER_SEC = 0.0;
 		final double MAX_REV_PER_SEC = 0.5;
-		double revsPerSecond = utilities.interpolate(playerDistance, DISTANCE_FOR_MIN_SPIN, DISTANCE_FOR_MAX_SPIN,
+		double revsPerSecond = Utilities.interpolate(playerDistance, DISTANCE_FOR_MIN_SPIN, DISTANCE_FOR_MAX_SPIN,
 				MIN_REV_PER_SEC, MAX_REV_PER_SEC);
 		double angularPositionInDegrees = tileEntityMBE21.getNextAngularPosition(revsPerSecond);
 

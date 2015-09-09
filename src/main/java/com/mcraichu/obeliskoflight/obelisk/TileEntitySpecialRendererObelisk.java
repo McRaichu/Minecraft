@@ -5,7 +5,7 @@ import java.awt.Color;
 import org.lwjgl.opengl.GL11;
 
 import com.mcraichu.obeliskoflight.Reference;
-import com.mcraichu.obeliskoflight.utilities.utilities;
+import com.mcraichu.obeliskoflight.utilities.Utilities;
 
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.OpenGlHelper;

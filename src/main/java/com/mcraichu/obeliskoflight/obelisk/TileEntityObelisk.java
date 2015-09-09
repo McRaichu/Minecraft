@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Random;
 
 import com.mcraichu.obeliskoflight.Reference;
+import com.mcraichu.obeliskoflight.utilities.Utilities;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
@@ -61,14 +62,24 @@ public class TileEntityObelisk extends TileEntity implements IUpdatePlayerListBo
 
 		//increase the ticks
 		ticks++;
+		
+		if((ticks < (int)(untilReady/2))){
+			return;
+		}
 
 		if(target != null){
-			if(target.getDistanceSqToCenter(this.pos) > (3072.0f)){ //32*32 + 32*32 + 32*32 aka 1024 * 3 
+			if(target.getDistanceSqToCenter(this.pos) > (((distance+2)*(distance+2))*3)){ //16*16 + 16*16 + 16*16 aka 256 * 3 
 				//out of range
 				target = null;
+				shot = false;
 			}else if(target.isDead){
 				//target died
 				target = null;
+				shot = false;
+			}else if(Utilities.inLineOfSight(this, new Vec3(0.5,3,0.5), target)){
+				//can't see the target
+				target = null;
+				shot = false;
 			}
 
 		}
@@ -85,12 +96,14 @@ public class TileEntityObelisk extends TileEntity implements IUpdatePlayerListBo
 			{
 				EntityMob targetMob = (EntityMob)iterator.next();
 				double d1 = targetMob.getDistanceSqToCenter(this.pos);
-
-				if (d1 < d0)
-				{
-					d0 = d1;
-					target = targetMob;
-				}
+				
+				if(Utilities.inLineOfSight(this, new Vec3(0.5,3,0.5), targetMob)){
+					if (d1 < d0)
+					{
+						d0 = d1;
+						target = targetMob;
+					}
+				}				
 			}
 		}
 
