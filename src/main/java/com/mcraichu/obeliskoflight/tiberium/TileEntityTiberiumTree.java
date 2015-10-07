@@ -20,7 +20,7 @@ public class TileEntityTiberiumTree extends TileEntity implements IUpdatePlayerL
 
 	private int ticks;
 	private int untilPosion = 100;
-	private int growTiberium = 2400;
+	private int growTiberium = 2000;
 
 	public TileEntityTiberiumTree(){
 		ticks = 0;

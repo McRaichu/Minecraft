@@ -21,21 +21,22 @@ import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
+import net.minecraft.world.chunk.Chunk;
 
 public class Utilities {
 
-	private static final Method methodIsChunkLoaded;
-
-	static {
-	    Method m;
-	    try {
-	        m = World.class.getDeclaredMethod("isChunkLoaded", int.class, int.class, boolean.class);
-	        m.setAccessible(true);
-	   } catch (Exception e) {
-	        throw new RuntimeException(e);
-	   }
-	   methodIsChunkLoaded = m;
-	}
+//	private static final Method methodIsChunkLoaded;
+//
+//	static {
+//	    Method m;
+//	    try {
+//	        m = World.class.getDeclaredMethod("isChunkLoaded", int.class, int.class, boolean.class);
+//	        m.setAccessible(true);
+//	   } catch (Exception e) {
+//	        throw new RuntimeException(e);
+//	   }
+//	   methodIsChunkLoaded = m;
+//	}
 	
 	public static double MAX_ENTITY_RADIUS = 2.0D;
 	/** linearly interpolate for y between [x1, y1] to [x2, y2] using x
@@ -70,6 +71,7 @@ public class Utilities {
 		int j = MathHelper.floor_double((aabb.maxX + MAX_ENTITY_RADIUS) / 16.0D);
 		int k = MathHelper.floor_double((aabb.minZ - MAX_ENTITY_RADIUS) / 16.0D);
 		int l = MathHelper.floor_double((aabb.maxZ + MAX_ENTITY_RADIUS) / 16.0D);
+		
 		ArrayList arraylist = Lists.newArrayList();
 
 		for (int i1 = i; i1 <= j; ++i1)
@@ -79,14 +81,24 @@ public class Utilities {
 				boolean chunkLoaded = false;
 				try {
 	
-					chunkLoaded = (Boolean) methodIsChunkLoaded.invoke((World)world, i1, j1, true);
+//					isAreaLoaded(BlockPos center, int radius, boolean allowEmpty)
+					Chunk chunk = world.getChunkFromChunkCoords(i1, j1);
 					
-				} catch (IllegalAccessException e) {
-					e.printStackTrace();
-				} catch (IllegalArgumentException e) {
-					e.printStackTrace();
-				} catch (InvocationTargetException e) {
-					e.printStackTrace();
+					int x1 = chunk.xPosition * 16;
+		            int z1 = chunk.zPosition * 16;
+		            int x2 = chunk.xPosition * 16 + 16;
+		            int z2 = chunk.zPosition * 16 + 16;
+		            BlockPos from = new BlockPos(x1,aabb.minY,z1);
+		            BlockPos to = new BlockPos(x2,aabb.maxY,z2);
+					chunkLoaded = world.isAreaLoaded(from, to);
+//					chunkLoaded = (Boolean) methodIsChunkLoaded.invoke((World)world, i1, j1, true);
+					
+//				} catch (IllegalAccessException e) {
+//					e.printStackTrace();
+//				} catch (IllegalArgumentException e) {
+//					e.printStackTrace();
+//				} catch (InvocationTargetException e) {
+//					e.printStackTrace();
 				} catch (SecurityException e) {
 					e.printStackTrace();
 				}
