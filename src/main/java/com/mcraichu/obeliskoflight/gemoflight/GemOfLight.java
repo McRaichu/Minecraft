@@ -6,6 +6,7 @@ import java.util.Random;
 
 import com.mcraichu.obeliskoflight.ObeliskOfLightMain;
 import com.mcraichu.obeliskoflight.Reference;
+import com.mcraichu.obeliskoflight.blockgag.TileEntityGag;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
@@ -19,6 +20,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumWorldBlockLayer;
+import net.minecraft.util.Vec3;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.registry.GameRegistry;
@@ -35,10 +37,18 @@ public class GemOfLight extends Block implements ITileEntityProvider{
 		super(materialIn);
 		this.setCreativeTab(ObeliskOfLightMain.tabobelisk);   // the block will appear on the Blocks tab in creative
 		this.setStepSound(soundTypeStone);
-		this.setHardness(10.0f);
+		this.setHardness(1.0f);
 		this.setResistance(20.0f);
-		this.setHarvestLevel("pickaxe", 2);
+		this.setHarvestLevel("pickaxe", 0);
 		//this.drop = drop;
+		
+		float f = 0.275F;
+        float f1 = 0.725F;
+        float f2 = 0.275F;
+        float f3 = 0.725F;
+
+        this.setBlockBounds(f, 0.0F, f2, f1, 0.75F, f3);
+		
 	}
 
 	@Override
@@ -61,6 +71,13 @@ public class GemOfLight extends Block implements ITileEntityProvider{
 			//Color gemColor = colorChoices[random.nextInt(colorChoices.length)];
 			tileEntityMBE21.setGemColour(Color.RED);//gemColor);
 		}
+	}
+
+	@Override
+	public void onNeighborBlockChange(World worldIn, BlockPos pos, IBlockState state, Block neighborBlock){
+			if(worldIn.isAirBlock(pos.down())){
+				worldIn.destroyBlock(pos, true);
+			}
 	}
 
 	// -----------------

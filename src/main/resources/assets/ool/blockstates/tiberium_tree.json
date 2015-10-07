@@ -1,0 +1,8 @@
+{
+    "variants": {
+        "inventory": { "model": "ool:tiberium_tree_crown_model" },
+        "age=0": { "model": "ool:tiberium_tree_crown_model" },
+        "age=1": { "model": "ool:tiberium_tree_stem_model" },
+        "age=2": { "model": "ool:tiberium_tree_stem_model" }
+    }
+}

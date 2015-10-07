@@ -1,9 +1,13 @@
 package com.mcraichu.obeliskoflight.obelisk;
 
+import com.mcraichu.obeliskoflight.ObeliskOfLightMain;
+import com.mcraichu.obeliskoflight.nodturret.NodShell;
+
 import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.item.Item;
+import net.minecraftforge.fml.common.registry.EntityRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
 public class StartupCommon {
@@ -17,6 +21,8 @@ public class StartupCommon {
 		GameRegistry.registerBlock(obelisk, Obelisk.unl_name);
 		// you don't need to register an item corresponding to the block, GameRegistry.registerBlock does this automatically.
 		GameRegistry.registerTileEntity(TileEntityObelisk.class, Obelisk.unl_name + "_te");
+
+		
 	}
 
 	public static void initCommon()

@@ -3,8 +3,10 @@ package com.mcraichu.obeliskoflight.blockgag;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.BlockStone;
+import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyEnum;
@@ -23,15 +25,31 @@ import net.minecraft.util.Vec3;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
-public class BlockGag extends BlockContainer {
+public class BlockGag extends Block implements ITileEntityProvider {
 
 	public static String unl_name = "block_gag"; 
 
+	public static final Block.SoundType soundTypeGag = new Block.SoundType("iron", 1.0F, 1.0F)
+    {
+        /**
+         * Get the breaking sound for the Block
+         */
+        public String getBreakSound()
+        {
+            return "";
+        }
+        public String getPlaceSound()
+        {
+            return "";
+        }
+    };
+	
 	public BlockGag(){
 		super(Material.iron);
 		this.setHardness(10.0f);
 		this.setResistance(20.0f);
 		this.setLightLevel(2.0f);
+		this.setStepSound(soundTypeGag);		
 	}
 	//This block is called when block is broken and destroys the primary block.
 		
@@ -90,5 +108,5 @@ public class BlockGag extends BlockContainer {
 		drops.add(new ItemStack(com.mcraichu.obeliskoflight.itemobelisk.StartupCommon.item_obelisk, 1));
 		return drops;
 	}
-	
+		
 }

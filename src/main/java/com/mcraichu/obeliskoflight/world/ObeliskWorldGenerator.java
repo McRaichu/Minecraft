@@ -12,11 +12,13 @@ import net.minecraftforge.fml.common.IWorldGenerator;
 public class ObeliskWorldGenerator implements IWorldGenerator{
 
 	private WorldGenerator gen_gem_of_light;
+	private WorldGenerator gen_tiberium;
 	private int countChunks = 0;
 	private int countGems = 0;
 	
 	public ObeliskWorldGenerator(){
 		this.gen_gem_of_light = new WorldGenGemOfLight(com.mcraichu.obeliskoflight.gemoflight.StartupCommon.gem_of_light);
+		this.gen_tiberium = new WorldGenTiberium(com.mcraichu.obeliskoflight.tiberium.StartupCommon.tiberium,com.mcraichu.obeliskoflight.tiberium.StartupCommon.tiberiumtree);
 	}
 	
 	@Override
@@ -27,7 +29,8 @@ public class ObeliskWorldGenerator implements IWorldGenerator{
 		switch (world.provider.getDimensionId()) {
 		case 0: // Overworld
 			//WorldGenGemOfLight ignores maxheight aka takes the heighest solid block
-			this.runGenerator(this.gen_gem_of_light, world, random, chunkX, chunkZ, 0.03f, 1, 84, 84);
+			this.runGenerator(this.gen_gem_of_light, world, random, chunkX, chunkZ, 0.05f, 1, 84, 84);
+			this.runGenerator(this.gen_tiberium, world, random, chunkX, chunkZ, 0.01f, 1, 50, 70);
 			break;
 		case -1: // Nether
 
@@ -54,7 +57,7 @@ public class ObeliskWorldGenerator implements IWorldGenerator{
 					temp++;
 				}
 			}
-			System.out.println("In chunk number " + countChunks + " with (" + chunk_X + "," + chunk_Z + ") generated " + temp + " gems (Total: " + countGems + ").");
+//			System.out.println("In chunk number " + countChunks + " with (" + chunk_X + "," + chunk_Z + ") generated " + temp + " gems (Total: " + countGems + ").");
 		}
 		countChunks++;
 	}

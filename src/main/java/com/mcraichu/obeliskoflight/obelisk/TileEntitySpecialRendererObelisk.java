@@ -7,6 +7,7 @@ import org.lwjgl.opengl.GL11;
 import com.mcraichu.obeliskoflight.Reference;
 import com.mcraichu.obeliskoflight.utilities.Utilities;
 
+import net.minecraft.block.Block;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.RenderHelper;
@@ -14,9 +15,11 @@ import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.WorldRenderer;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.BlockPos;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Vec3;
+import net.minecraft.world.World;
 
 public class TileEntitySpecialRendererObelisk extends TileEntitySpecialRenderer{
 	
@@ -63,6 +66,7 @@ public class TileEntitySpecialRendererObelisk extends TileEntitySpecialRenderer{
 			GL11.glPushMatrix();
 			GL11.glPushAttrib(GL11.GL_ENABLE_BIT);
 
+
 			// First we need to set up the translation so that we render our gem with the bottom point at 0,0,0
 			// when the renderTileEntityAt method is called, the tessellator is set up so that drawing a dot at [0,0,0] corresponds to the player's eyes
 			// This means that, in order to draw a dot at the TileEntity [x,y,z], we need to translate the reference frame by the difference between the
@@ -93,6 +97,12 @@ public class TileEntitySpecialRendererObelisk extends TileEntitySpecialRenderer{
 			float glowMultiplier = 1.0f; 
 			final int SKY_LIGHT_VALUE = (int)(15 * glowMultiplier);
 			final int BLOCK_LIGHT_VALUE = 0;
+			
+			World world = this.getWorld();
+			BlockPos pos = tileEntity.getPos();
+			Block block = world.getBlockState(pos).getBlock();
+			float brightness = block.getLightValue(world,pos);
+			
 			OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, SKY_LIGHT_VALUE * 16.0F, BLOCK_LIGHT_VALUE * 16.0F);
 
 			worldrenderer.startDrawingQuads();
@@ -103,6 +113,8 @@ public class TileEntitySpecialRendererObelisk extends TileEntitySpecialRenderer{
 			tessellator.draw();
 
 		} finally {
+			GL11.glEnable(GL11.GL_LIGHTING);
+			GL11.glEnable(GL11.GL_BLEND);
 			GL11.glPopAttrib();
 			GL11.glPopMatrix();
 		}
@@ -386,6 +398,8 @@ public class TileEntitySpecialRendererObelisk extends TileEntitySpecialRenderer{
 			tessellator.draw();
 
 		} finally {
+			GL11.glEnable(GL11.GL_LIGHTING);
+			GL11.glEnable(GL11.GL_BLEND);
 			GL11.glPopAttrib();
 			GL11.glPopMatrix();
 		}

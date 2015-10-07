@@ -1,0 +1,8 @@
+{
+    "variants": {
+        "inventory": { "model": "ool:tiberium_small_model" },
+        "size=small": { "model": "ool:tiberium_small_model" },
+        "size=medium": { "model": "ool:tiberium_medium_model" },
+        "size=large": { "model": "ool:tiberium_large_model" }
+    }
+}

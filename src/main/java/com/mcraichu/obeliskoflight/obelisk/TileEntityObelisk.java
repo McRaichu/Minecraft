@@ -88,7 +88,7 @@ public class TileEntityObelisk extends TileEntity implements IUpdatePlayerListBo
 			AxisAlignedBB bb = new AxisAlignedBB(this.pos, this.pos.add(1, 1, 1));
 			List list = this.worldObj.getEntitiesWithinAABB(EntityMob.class, bb.expand((double)distance, (double)distance, (double)distance));
 
-			EntityEnderCrystal entityendercrystal = null;
+			//EntityEnderCrystal entityendercrystal = null;
 			double d0 = Double.MAX_VALUE;
 			Iterator iterator = list.iterator();
 
@@ -135,6 +135,7 @@ public class TileEntityObelisk extends TileEntity implements IUpdatePlayerListBo
 		}		
 
 		target.attackEntityFrom(source, damage);
+		target.hurtResistantTime = 0;
 
 
 

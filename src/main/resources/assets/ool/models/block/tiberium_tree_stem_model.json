@@ -1,0 +1,12 @@
+{
+    "parent": "block/cube",
+    "textures": {
+        "down": "ool:blocks/tiberium_tree_bottom",
+        "up": "ool:blocks/tiberium_tree_bottom",
+        "north": "ool:blocks/tiberium_tree_stem_side",
+        "east": "ool:blocks/tiberium_tree_stem_side",
+        "south": "ool:blocks/tiberium_tree_stem_side",
+        "west": "ool:blocks/tiberium_tree_stem_side",
+        "particle": "ool:blocks/tiberium_tree_crown_side"
+    }
+}

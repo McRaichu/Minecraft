@@ -1,4 +1,10 @@
 {
     "sound_fire": { "category": "master", "sounds": [{"name": "sound_fire","stream": false} ] },
-    "sound_charge":  { "category": "master", "sounds": [ {"name": "sound_charge","stream": false} ] }
+    "sound_charge":  { "category": "master", "sounds": [ {"name": "sound_charge","stream": false} ] },
+    "sound_shot":  { "category": "master", "sounds": [ {"name": "sound_shot","stream": false} ] },
+    "harvester_hurt":  { "category": "neutral", "sounds": [ {"name": "harvester_hurt","stream": false} ] },
+    "harvester_step":  { "category": "neutral", "sounds": [ {"name": "harvester_step","stream": false} ] },
+    "harvester_death":  { "category": "neutral", "sounds": [ {"name": "harvester_death","stream": false} ] },
+    "harvester_alive":  { "category": "neutral", "sounds": [ {"name": "harvester_alive","stream": false} ] },
+    "harvester_say":  { "category": "neutral", "sounds": [ {"name": "harvester_say","stream": false} ] }
 }

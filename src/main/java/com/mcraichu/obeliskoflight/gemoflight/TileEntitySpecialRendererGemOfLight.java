@@ -49,7 +49,7 @@ public class TileEntitySpecialRendererGemOfLight extends TileEntitySpecialRender
 		// 4) the speed at which the gem is spinning, which depends on player distance.
 
 		final double pedestalCentreOffsetX = 0.5;
-		final double pedestalCentreOffsetY = 0.8;
+		final double pedestalCentreOffsetY = -0.3;
 		final double pedestalCentreOffsetZ = 0.5;
 		Vec3 playerEye = new Vec3(0.0, 0.0, 0.0);
 		Vec3 pedestalCentre = new Vec3(relativeX + pedestalCentreOffsetX, relativeY + pedestalCentreOffsetY, relativeZ + pedestalCentreOffsetZ);
@@ -134,6 +134,8 @@ public class TileEntitySpecialRendererGemOfLight extends TileEntitySpecialRender
 			tessellator.draw();
 
 		} finally {
+			GL11.glEnable(GL11.GL_LIGHTING);
+			GL11.glEnable(GL11.GL_BLEND);
 			GL11.glPopAttrib();
 			GL11.glPopMatrix();
 		}

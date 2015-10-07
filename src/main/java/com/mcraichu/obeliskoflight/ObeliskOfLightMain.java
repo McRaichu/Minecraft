@@ -1,11 +1,15 @@
 package com.mcraichu.obeliskoflight;
 
+import com.mcraichu.obeliskoflight.nodturret.NodShell;
+import com.mcraichu.obeliskoflight.world.Entities;
+
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.registry.EntityRegistry;
 
 
 @Mod(modid = Reference.MODID, version = Reference.VERSION, name = Reference.MODNAME)
@@ -20,12 +24,15 @@ public class ObeliskOfLightMain {
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event)
 	{
+		Entities.preinit(this);
 		proxy.preInit();
+	
 	}
 
 	@EventHandler
 	public void init(FMLInitializationEvent event)
 	{
+		
 		proxy.init();
 	}
 

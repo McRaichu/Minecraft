@@ -10,6 +10,13 @@ public class ClientProxy extends CommonProxy{
 		com.mcraichu.obeliskoflight.itemobelisk.StartupClient.preInitClient();
 		com.mcraichu.obeliskoflight.blockgag.StartupClient.preInitClient();
 		com.mcraichu.obeliskoflight.nodarmor.StartupClient.preInitClient();
+		com.mcraichu.obeliskoflight.nodturret.StartupClient.preInitClient();
+		com.mcraichu.obeliskoflight.itembarrel.StartupClient.preInitClient();
+		com.mcraichu.obeliskoflight.barbedwirefence.StartupClient.preInitClient();
+		com.mcraichu.obeliskoflight.hovercraft.StartupClient.preInitClient();
+		com.mcraichu.obeliskoflight.tiberium.StartupClient.preInitClient();
+		com.mcraichu.obeliskoflight.harvester.StartupClient.preInitClient();
+		com.mcraichu.obeliskoflight.stealthtank.StartupClient.preInitClient();
 		
 	}
 
@@ -21,6 +28,14 @@ public class ClientProxy extends CommonProxy{
 		com.mcraichu.obeliskoflight.itemobelisk.StartupClient.initClient();
 		com.mcraichu.obeliskoflight.blockgag.StartupClient.initClient();
 		com.mcraichu.obeliskoflight.nodarmor.StartupClient.initClient();
+		com.mcraichu.obeliskoflight.nodturret.StartupClient.initClient();
+		com.mcraichu.obeliskoflight.itembarrel.StartupClient.initClient();
+		com.mcraichu.obeliskoflight.barbedwirefence.StartupClient.initClient();
+		com.mcraichu.obeliskoflight.hovercraft.StartupClient.initClient();
+		com.mcraichu.obeliskoflight.tiberium.StartupClient.initClient();
+		com.mcraichu.obeliskoflight.harvester.StartupClient.initClient();
+		com.mcraichu.obeliskoflight.stealthtank.StartupClient.initClient();
+		
 	}
 
 	public void postInit(){
@@ -31,6 +46,14 @@ public class ClientProxy extends CommonProxy{
 		com.mcraichu.obeliskoflight.itemobelisk.StartupClient.postInitClient();
 		com.mcraichu.obeliskoflight.blockgag.StartupClient.postInitClient();
 		com.mcraichu.obeliskoflight.nodarmor.StartupClient.postInitClient();
+		com.mcraichu.obeliskoflight.nodturret.StartupClient.postInitClient();
+		com.mcraichu.obeliskoflight.itembarrel.StartupClient.postInitClient();
+		com.mcraichu.obeliskoflight.barbedwirefence.StartupClient.postInitClient();
+		com.mcraichu.obeliskoflight.hovercraft.StartupClient.postInitClient();
+		com.mcraichu.obeliskoflight.tiberium.StartupClient.postInitClient();
+		com.mcraichu.obeliskoflight.harvester.StartupClient.postInitClient();
+		com.mcraichu.obeliskoflight.stealthtank.StartupClient.postInitClient();
+		
 	}
 
 }

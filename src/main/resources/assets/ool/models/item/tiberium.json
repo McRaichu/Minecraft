@@ -1,0 +1,16 @@
+{
+    "parent": "ool:block/tiberium_medium_model",
+    "display": {
+        "firstperson": {
+            "translation": [ 0, 2.0, 0 ]
+        },
+        "thirdperson": {
+            "rotation": [ 0, 45, 180 ],
+            "translation": [ 0, 0.0, -2.75 ],
+            "scale": [ 0.6, 0.6, 0.6 ]
+        },
+        "gui": {
+            "rotation": [ 0, 90, 0 ]
+        }
+    }
+}

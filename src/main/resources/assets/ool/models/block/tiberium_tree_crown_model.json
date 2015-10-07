@@ -1,0 +1,76 @@
+{
+    "__comment": "Model generated using MrCrayfish's Model Creator (http://mrcrayfish.com/modelcreator/)",
+    "textures": {
+        "0": "ool:blocks/tiberium_tree_crown_side",
+        "1": "ool:blocks/tiberium_tree_crown_top",
+        "2": "ool:blocks/tiberium_tree_bottom",
+        "particle": "ool:blocks/tiberium_tree_crown_side"
+    },
+    "elements": [
+        {
+            "name": "b1",
+            "from": [ 0.0, 0.0, 0.0 ], 
+            "to": [ 16.0, 10.0, 16.0 ], 
+            "faces": {
+                "north": { "texture": "#0", "uv": [ 0.0, 5.0, 16.0, 15.0 ] },
+                "east": { "texture": "#0", "uv": [ 0.0, 5.0, 16.0, 15.0 ] },
+                "south": { "texture": "#0", "uv": [ 0.0, 5.0, 16.0, 15.0 ] },
+                "west": { "texture": "#0", "uv": [ 0.0, 5.0, 16.0, 15.0 ] },
+                "up": { "texture": "#1", "uv": [ 0.0, 0.0, 16.0, 16.0 ] },
+                "down": { "texture": "#2", "uv": [ 0.0, 0.0, 16.0, 16.0 ] }
+            }
+        },
+        {
+            "name": "b2",
+            "from": [ -1.0, 2.0, -1.0 ], 
+            "to": [ 17.0, 8.0, 17.0 ], 
+            "faces": {
+                "north": { "texture": "#0", "uv": [ 0.0, 6.0, 16.0, 16.0 ] },
+                "east": { "texture": "#0", "uv": [ 0.0, 6.0, 16.0, 12.0 ] },
+                "south": { "texture": "#0", "uv": [ 0.0, 6.0, 16.0, 12.0 ] },
+                "west": { "texture": "#0", "uv": [ 0.0, 6.0, 16.0, 12.0 ] },
+                "up": { "texture": "#1", "uv": [ 0.0, 0.0, 16.0, 16.0 ] },
+                "down": { "texture": "#2", "uv": [ 0.0, 0.0, 16.0, 16.0 ] }
+            }
+        },
+        {
+            "name": "b3",
+            "from": [ 2.0, 10.0, 2.0 ], 
+            "to": [ 14.0, 12.0, 14.0 ], 
+            "faces": {
+                "north": { "texture": "#0", "uv": [ 0.0, 5.0, 12.0, 7.0 ] },
+                "east": { "texture": "#0", "uv": [ 0.0, 5.0, 12.0, 7.0 ] },
+                "south": { "texture": "#0", "uv": [ 0.0, 5.0, 12.0, 7.0 ] },
+                "west": { "texture": "#0", "uv": [ 0.0, 5.0, 12.0, 7.0 ] },
+                "up": { "texture": "#0", "uv": [ 0.0, 0.0, 16.0, 7.0 ] },
+                "down": { "texture": "#2", "uv": [ 0.0, 0.0, 16.0, 15.0 ] }
+            }
+        },
+        {
+            "name": "b4",
+            "from": [ 4.0, 12.0, 4.0 ], 
+            "to": [ 12.0, 14.0, 12.0 ], 
+            "faces": {
+                "north": { "texture": "#0", "uv": [ 0.0, 5.0, 8.0, 7.0 ] },
+                "east": { "texture": "#0", "uv": [ 0.0, 5.0, 8.0, 7.0 ] },
+                "south": { "texture": "#0", "uv": [ 0.0, 5.0, 8.0, 7.0 ] },
+                "west": { "texture": "#0", "uv": [ 0.0, 5.0, 8.0, 7.0 ] },
+                "up": { "texture": "#0", "uv": [ 0.0, 0.0, 16.0, 7.0 ] },
+                "down": { "texture": "#2", "uv": [ 0.0, 0.0, 16.0, 15.0 ] }
+            }
+        },
+        {
+            "name": "b5",
+            "from": [ 5.0, 14.0, 5.0 ], 
+            "to": [ 11.0, 16.0, 11.0 ], 
+            "faces": {
+                "north": { "texture": "#0", "uv": [ 0.0, 5.0, 6.0, 7.0 ] },
+                "east": { "texture": "#0", "uv": [ 0.0, 5.0, 6.0, 7.0 ] },
+                "south": { "texture": "#0", "uv": [ 0.0, 5.0, 6.0, 7.0 ] },
+                "west": { "texture": "#0", "uv": [ 0.0, 5.0, 6.0, 7.0 ] },
+                "up": { "texture": "#1", "uv": [ 0.0, 0.0, 16.0, 16.0 ] },
+                "down": { "texture": "#2", "uv": [ 0.0, 0.0, 16.0, 15.0 ] }
+            }
+        }
+    ]
+}
