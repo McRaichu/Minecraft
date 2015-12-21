@@ -1,0 +1,25 @@
+{
+    "forge_marker": 1,
+    "defaults": {
+        "textures": {
+            "texture": "ool:blocks/refinery.png"
+        },
+        "model": "ool:templeofnod.b3d"
+     },
+    "variants": { 
+        "normal": [{
+            "transform": {
+                "translation": [ 0, 10.0, 0],
+                "scale": 1.5
+            }
+        }],
+        "inventory": [{
+            "transform": "forge:default-block"
+        }],
+        "status": {
+            "on": {"model": "ool:templeofnod.b3d"},
+            "off": {"model": "ool:templeofnod.b3d"}
+        }
+        
+    }
+}
