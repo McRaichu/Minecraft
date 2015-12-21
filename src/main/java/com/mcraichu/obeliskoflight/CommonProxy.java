@@ -16,6 +16,10 @@ public class CommonProxy {
 		com.mcraichu.obeliskoflight.tiberium.StartupCommon.preInitCommon();
 		com.mcraichu.obeliskoflight.harvester.StartupCommon.preInitCommon();
 		com.mcraichu.obeliskoflight.stealthtank.StartupCommon.preInitCommon();
+		com.mcraichu.obeliskoflight.orca.StartupCommon.preInitCommon();
+		com.mcraichu.obeliskoflight.reconbike.StartupCommon.preInitCommon();
+		com.mcraichu.obeliskoflight.templeofnod.StartupCommon.preInitCommon();
+		
 	}
 
 	public void init(){
@@ -32,6 +36,9 @@ public class CommonProxy {
 		com.mcraichu.obeliskoflight.tiberium.StartupCommon.initCommon();
 		com.mcraichu.obeliskoflight.harvester.StartupCommon.initCommon();
 		com.mcraichu.obeliskoflight.stealthtank.StartupCommon.initCommon();
+		com.mcraichu.obeliskoflight.orca.StartupCommon.initCommon();
+		com.mcraichu.obeliskoflight.reconbike.StartupCommon.initCommon();
+		com.mcraichu.obeliskoflight.templeofnod.StartupCommon.initCommon();
 		
 		//only here init recipes
 		com.mcraichu.obeliskoflight.recipes.StartupCommon.initCommon();
@@ -54,6 +61,9 @@ public class CommonProxy {
 		com.mcraichu.obeliskoflight.tiberium.StartupCommon.postInitCommon();
 		com.mcraichu.obeliskoflight.harvester.StartupCommon.postInitCommon();
 		com.mcraichu.obeliskoflight.stealthtank.StartupCommon.postInitCommon();
+		com.mcraichu.obeliskoflight.orca.StartupCommon.postInitCommon();
+		com.mcraichu.obeliskoflight.reconbike.StartupCommon.postInitCommon();
+		com.mcraichu.obeliskoflight.templeofnod.StartupCommon.postInitCommon();
 	}
 
 }

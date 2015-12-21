@@ -28,7 +28,7 @@ public class NodRocket extends EntityThrowable {
 	public float speed = 1.0F;
 	public int arrowShake;
 	private float gravity = 0.00F;
-	public float damage = 5.0f;
+	public float damage = 6.0f;
 	private double radius = 1.5;
 
 	public NodRocket(World worldIn) {
@@ -54,6 +54,13 @@ public class NodRocket extends EntityThrowable {
 
 	public NodRocket(World worldIn, boolean isHoming, Entity target) {
 		super(worldIn);
+		this.target = target;
+		this.isHoming = isHoming;
+		initNodRocket();
+	}
+
+	public NodRocket(World worldIn, EntityLivingBase thrower, boolean isHoming, Entity target) {
+		super(worldIn,thrower);
 		this.target = target;
 		this.isHoming = isHoming;
 		initNodRocket();
@@ -106,7 +113,9 @@ public class NodRocket extends EntityThrowable {
 			List<EntityLivingBase> targets = worldObj.getEntitiesWithinAABB(EntityLivingBase.class, axis);
 
 			for (EntityLivingBase mob : targets) {
-				if(!StealthTank.class.isInstance(mob)){
+				
+				if(this.getThrower() != mob)
+				{
 					mob.attackEntityFrom(new DamageSource("rocket"), damage);
 				}
 				//mob.hurtResistantTime = 0;

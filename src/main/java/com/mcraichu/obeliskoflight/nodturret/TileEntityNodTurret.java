@@ -147,7 +147,7 @@ public class TileEntityNodTurret extends TileEntity implements IUpdatePlayerList
 				this.worldObj.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, dist.xCoord + (random.nextGaussian() / 10), dist.yCoord + (random.nextGaussian() / 10),
 						dist.zCoord + (random.nextGaussian() / 10), (0), (0), (0));
 			}
-			this.worldObj.playSound(this.pos.getX(), this.pos.getY(), this.pos.getZ(), Reference.MODID + ":" + "sound_shot",0.5f, 1.0f, false);
+			this.worldObj.playSound(this.pos.getX(), this.pos.getY(), this.pos.getZ(), Reference.MODID + ":" + "tank_fire",0.5f, 1.0f, false);
 
 		}
 		ticks = 0;

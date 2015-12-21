@@ -3,6 +3,8 @@ package com.mcraichu.obeliskoflight;
 import com.mcraichu.obeliskoflight.nodturret.NodShell;
 import com.mcraichu.obeliskoflight.world.Entities;
 
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.SidedProxy;
@@ -21,9 +23,14 @@ public class ObeliskOfLightMain {
 
 	public static final ObeliskOfLightTab tabobelisk = new ObeliskOfLightTab("tabObelisk");
 	
+	OOLEventHandler events = new OOLEventHandler();
+	
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event)
 	{
+		FMLCommonHandler.instance().bus().register(events);
+    	MinecraftForge.EVENT_BUS.register(events);
+		
 		Entities.preinit(this);
 		proxy.preInit();
 	

@@ -10,6 +10,7 @@ import com.mcraichu.obeliskoflight.itemobelisk.ItemObelisk;
 import com.mcraichu.obeliskoflight.nodarmor.NodArmor;
 import com.mcraichu.obeliskoflight.nodturret.NodTurret;
 import com.mcraichu.obeliskoflight.obeliskpart.ObeliskPart;
+import com.mcraichu.obeliskoflight.reconbike.ItemReconBike;
 import com.mcraichu.obeliskoflight.tiberium.Tiberium;
 
 import net.minecraft.block.material.Material;
@@ -96,6 +97,15 @@ public class StartupCommon {
 			'K', Items.coal,
 			'C', Blocks.chest,
 			'T', GameRegistry.findItem(Reference.MODID, Tiberium.unl_name)
+		});
+		GameRegistry.addShapedRecipe(new ItemStack(GameRegistry.findItem(Reference.MODID, ItemReconBike.unl_name),1), new Object[]{
+			"DHD",
+			"RSR",
+			"...",
+			'D', Blocks.dispenser,
+			'H', GameRegistry.findItem(Reference.MODID, NodArmor.unl_name + "_helmet"),
+			'R', Blocks.redstone_block,
+			'S', Items.saddle
 		});
 		
 		recipesNodArmor();

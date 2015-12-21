@@ -17,6 +17,9 @@ public class ClientProxy extends CommonProxy{
 		com.mcraichu.obeliskoflight.tiberium.StartupClient.preInitClient();
 		com.mcraichu.obeliskoflight.harvester.StartupClient.preInitClient();
 		com.mcraichu.obeliskoflight.stealthtank.StartupClient.preInitClient();
+		com.mcraichu.obeliskoflight.orca.StartupClient.preInitClient();
+		com.mcraichu.obeliskoflight.reconbike.StartupClient.preInitClient();
+		com.mcraichu.obeliskoflight.templeofnod.StartupClient.preInitClient();
 		
 	}
 
@@ -35,6 +38,9 @@ public class ClientProxy extends CommonProxy{
 		com.mcraichu.obeliskoflight.tiberium.StartupClient.initClient();
 		com.mcraichu.obeliskoflight.harvester.StartupClient.initClient();
 		com.mcraichu.obeliskoflight.stealthtank.StartupClient.initClient();
+		com.mcraichu.obeliskoflight.orca.StartupClient.initClient();
+		com.mcraichu.obeliskoflight.reconbike.StartupClient.initClient();
+		com.mcraichu.obeliskoflight.templeofnod.StartupClient.initClient();
 		
 	}
 
@@ -53,6 +59,9 @@ public class ClientProxy extends CommonProxy{
 		com.mcraichu.obeliskoflight.tiberium.StartupClient.postInitClient();
 		com.mcraichu.obeliskoflight.harvester.StartupClient.postInitClient();
 		com.mcraichu.obeliskoflight.stealthtank.StartupClient.postInitClient();
+		com.mcraichu.obeliskoflight.orca.StartupClient.postInitClient();
+		com.mcraichu.obeliskoflight.reconbike.StartupClient.postInitClient();
+		com.mcraichu.obeliskoflight.templeofnod.StartupClient.postInitClient();
 		
 	}
 

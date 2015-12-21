@@ -120,7 +120,7 @@ public class StealthTank extends EntityMob implements IRangedAttackMob
 //		this.playSound("random.bow", 1.0F, 1.0F / (this.getRNG().nextFloat() * 0.4F + 0.8F));
 //		this.worldObj.spawnEntityInWorld(entityarrow);
 
-		NodRocket projectile = new NodRocket(this.worldObj, true, p_82196_1_);
+		NodRocket projectile = new NodRocket(this.worldObj,this , true, p_82196_1_);
 
 		this.posY = this.posY + (double)this.getEyeHeight() - 0.10000000149011612D;
 		double d0 = p_82196_1_.posX - this.posX;
@@ -139,6 +139,7 @@ public class StealthTank extends EntityMob implements IRangedAttackMob
 				projectile.setThrowableHeading(d0, d1 + (double)f4, d2, projectile.speed, (float)(14 - this.worldObj.getDifficulty().getDifficultyId() * 4));
 				projectile.damage = (float) (projectile.damage  * (double)this.worldObj.getDifficulty().getDifficultyId());
 				this.worldObj.spawnEntityInWorld(projectile);
+				this.playSound(Reference.MODID + ":" + "rocket", 1.0f, 1.0f);
 			}
 		}
 

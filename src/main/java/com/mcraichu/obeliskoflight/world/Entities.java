@@ -9,6 +9,8 @@ import com.mcraichu.obeliskoflight.Reference;
 import com.mcraichu.obeliskoflight.harvester.Harvester;
 import com.mcraichu.obeliskoflight.hovercraft.Hovercraft;
 import com.mcraichu.obeliskoflight.nodturret.NodShell;
+import com.mcraichu.obeliskoflight.orca.Orca;
+import com.mcraichu.obeliskoflight.reconbike.ReconBike;
 import com.mcraichu.obeliskoflight.stealthtank.NodRocket;
 import com.mcraichu.obeliskoflight.stealthtank.StealthTank;
 
@@ -37,6 +39,14 @@ public class Entities {
 		entityID = EntityRegistry.findGlobalUniqueEntityId();
 		EntityRegistry.registerGlobalEntityID(NodRocket.class, Reference.MODID+".NodRocket", entityID);
 		EntityRegistry.registerModEntity(NodRocket.class, Reference.MODID+".NodRocket", entityID, mod , 64, 10, true);
+		
+		entityID = EntityRegistry.findGlobalUniqueEntityId();
+		EntityRegistry.registerGlobalEntityID(Orca.class, Reference.MODID+".Orca", entityID, 0x3F0000, 0xEEEEEE);
+		EntityRegistry.registerModEntity(Orca.class, Reference.MODID+".Orca", entityID, mod , 64, 3, false);
+		
+		entityID = EntityRegistry.findGlobalUniqueEntityId();
+		EntityRegistry.registerGlobalEntityID(ReconBike.class, Reference.MODID+".ReconBike", entityID, 0x494949, 0xEEEEEE);
+		EntityRegistry.registerModEntity(ReconBike.class, Reference.MODID+".ReconBike", entityID, mod , 64, 3, false);
 		
 		
 	}

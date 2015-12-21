@@ -57,7 +57,7 @@ public class TileEntityObelisk extends TileEntity implements IUpdatePlayerListBo
 		}
 
 		if(ticksUntilCharged == 1){
-			this.worldObj.playSound(this.pos.getX(), this.pos.getY(), this.pos.getZ(), Reference.MODID + ":" + "sound_charge", 1.0f, 1.0f, false);
+			this.worldObj.playSound(this.pos.getX(), this.pos.getY(), this.pos.getZ(), Reference.MODID + ":" + "obelisk_of_light_powering_up", 1.0f, 1.0f, false);
 		}
 
 		//increase the ticks
@@ -143,7 +143,7 @@ public class TileEntityObelisk extends TileEntity implements IUpdatePlayerListBo
 		shot = true;
 		ticksUntilReady = 0;
 		ticks = 0;
-		this.worldObj.playSound(this.pos.getX(), this.pos.getY(), this.pos.getZ(), Reference.MODID + ":" + "sound_fire", 1.0f, 1.0f, false);
+		this.worldObj.playSound(this.pos.getX(), this.pos.getY(), this.pos.getZ(), Reference.MODID + ":" + "obelisk_of_light_sound", 1.0f, 1.0f, false);
 	}
 
 	public int currentCharge(){

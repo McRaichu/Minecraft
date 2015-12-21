@@ -1,6 +1,7 @@
 package com.mcraichu.obeliskoflight.harvester;
 
 import com.mcraichu.obeliskoflight.Reference;
+import com.mcraichu.obeliskoflight.stealthtank.StealthTank;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.DataWatcher;
@@ -259,10 +260,9 @@ public class Harvester extends EntityCreature
     {
         if (!this.worldObj.isRemote)
         {
-            EntityPigZombie entitypigzombie = new EntityPigZombie(this.worldObj);
-            entitypigzombie.setCurrentItemOrArmor(0, new ItemStack(Items.golden_sword));
-            entitypigzombie.setLocationAndAngles(this.posX, this.posY, this.posZ, this.rotationYaw, this.rotationPitch);
-            this.worldObj.spawnEntityInWorld(entitypigzombie);
+            StealthTank entitystealthtank = new StealthTank(this.worldObj);
+            entitystealthtank.setLocationAndAngles(this.posX, this.posY, this.posZ, this.rotationYaw, this.rotationPitch);
+            this.worldObj.spawnEntityInWorld(entitystealthtank);
             this.setDead();
         }
     }
@@ -298,4 +298,14 @@ public class Harvester extends EntityCreature
     {
         return this.aiControlledByPlayer;
     }
+    
+    /**
+     * Determines if an entity can be despawned, used on idle far away entities
+     */
+    @Override
+    protected boolean canDespawn()
+    {
+        return false;
+    }
+    
 }
